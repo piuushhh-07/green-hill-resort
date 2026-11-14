@@ -298,107 +298,133 @@ function initAccordion() {
   });
 }
 
-/* ---------- Booking forms: hero strip + main form + WhatsApp link ---------- */
+/* ---------- Availability enquiry forms ---------- */
 function initBookingForms() {
   const stripForm = document.getElementById('booking-strip-form');
   const mainForm = document.getElementById('booking-form');
   const successBox = document.getElementById('booking-success');
-  const waBtn = document.getElementById('whatsapp-book-btn');
+  const status = document.getElementById('booking-form-status');
+  const submitButton = document.getElementById('booking-submit');
+  const dateMode = document.getElementById('bf-date-flexibility');
+  const specificDates = document.getElementById('specific-date-fields');
+  const flexibleDateField = document.getElementById('flexible-date-field');
+  const preferredDate = document.getElementById('bf-date');
+  const endDate = document.getElementById('bf-end-date');
+  const enquiryType = document.getElementById('bf-type');
 
-  const buildWhatsAppLink = () => {
-    const name = mainForm?.name?.value || 'there';
-    const checkin = mainForm?.checkin?.value || '';
-    const checkout = mainForm?.checkout?.value || '';
-    const guests = mainForm?.guests?.value || '';
-    let text = `Hi! I'd like to enquire about Green Hill Resort.`;
-    text += `\nName: ${name}`;
-    if (checkin) text += `\nCheck-in: ${checkin}`;
-    if (checkout) text += `\nCheck-out: ${checkout}`;
-    if (guests) text += `\nGuests: ${guests}`;
-    return `https://wa.me/?text=${encodeURIComponent(text)}`;
+  const syncDateFields = () => {
+    if (!dateMode || !specificDates || !flexibleDateField) return;
+    const isSpecific = dateMode.value === 'Specific dates';
+    specificDates.hidden = !isSpecific;
+    flexibleDateField.hidden = dateMode.value !== 'Flexible dates';
+    if (preferredDate) preferredDate.required = isSpecific;
+    if (endDate) {
+      const isStay = enquiryType?.value === 'Weekend Getaway';
+      endDate.required = isSpecific && isStay;
+      const label = endDate.closest('.form-field')?.querySelector('label');
+      if (label) label.textContent = isStay ? 'Check-out date *' : 'End date (if applicable)';
+    }
   };
+  dateMode?.addEventListener('change', syncDateFields);
+  enquiryType?.addEventListener('change', syncDateFields);
+  syncDateFields();
 
-  const refreshWhatsAppLink = () => {
-    if (waBtn) waBtn.href = buildWhatsAppLink();
-  };
-
-  if (mainForm) {
-    ['name', 'checkin', 'checkout', 'guests'].forEach((field) => {
-      mainForm[field]?.addEventListener('input', refreshWhatsAppLink);
-    });
-    refreshWhatsAppLink();
-  }
-
-  // Hero booking strip: carries values into the main form and scrolls down to it.
-  if (stripForm) {
-    stripForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (mainForm) {
-        mainForm.checkin.value = stripForm.checkin.value;
-        mainForm.checkout.value = stripForm.checkout.value;
-        if (mainForm.occasion && stripForm.guests.value) {
-          mainForm.occasion.value = stripForm.guests.value;
-        }
-        refreshWhatsAppLink();
+  if (stripForm && mainForm) {
+    stripForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const stripDate = document.getElementById('strip-date')?.value || '';
+      const stripEndDate = document.getElementById('strip-end-date')?.value || '';
+      const stripType = document.getElementById('strip-type')?.value || '';
+      if (stripDate) {
+        dateMode.value = 'Specific dates';
+        preferredDate.value = stripDate;
       }
+      if (stripEndDate && endDate) endDate.value = stripEndDate;
+      if (stripType && enquiryType) enquiryType.value = stripType;
+      syncDateFields();
       document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => document.getElementById('bf-name')?.focus({ preventScroll: true }), 450);
     });
   }
 
-  // Main booking form: attempts a Netlify-style submission, then shows success either way.
   if (mainForm) {
-    mainForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!datesAreValid(mainForm.checkin.value, mainForm.checkout.value)) {
-        alert('Check-out date must be after the check-in date.');
+    mainForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (status) status.textContent = '';
+      if (dateMode?.value === 'Specific dates') {
+        if (!preferredDate?.value) {
+          preferredDate?.focus();
+          if (status) status.textContent = 'Please choose your preferred date, or select flexible dates.';
+          return;
+        }
+        if (endDate?.value && new Date(endDate.value) <= new Date(preferredDate.value)) {
+          endDate.setCustomValidity('End date must be after the preferred date.');
+          endDate.reportValidity();
+          return;
+        }
+        endDate?.setCustomValidity('');
+      }
+      if (!mainForm.reportValidity()) return;
+      const phone = mainForm.elements.phone?.value.replace(/[^0-9+]/g, '') || '';
+      if (phone.replace(/\D/g, '').length < 10) {
+        mainForm.elements.phone.setCustomValidity('Please enter a valid phone number with at least 10 digits.');
+        mainForm.elements.phone.reportValidity();
         return;
       }
-
+      mainForm.elements.phone.setCustomValidity('');
       const formData = new FormData(mainForm);
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending enquiry…';
+      }
       try {
-        await fetch('/', {
+        const response = await fetch('/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams(formData).toString(),
         });
-      } catch (err) {
-        // Expected on hosts without form handling configured (see README).
-        console.warn('Booking form endpoint not configured for this deployment yet.', err);
+        if (!response.ok) throw new Error('The form service returned ' + response.status);
+        mainForm.hidden = true;
+        if (successBox) successBox.hidden = false;
+      } catch (error) {
+        console.error('Availability enquiry could not be submitted:', error);
+        if (status) status.textContent = 'We could not send your enquiry right now. Please try again in a moment.';
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Try Sending Again';
+        }
       }
-
-      mainForm.hidden = true;
-      if (successBox) successBox.hidden = false;
     });
   }
+  document.getElementById('booking-another')?.addEventListener('click', () => {
+    if (mainForm) { mainForm.reset(); mainForm.hidden = false; }
+    if (successBox) successBox.hidden = true;
+    if (submitButton) { submitButton.disabled = false; submitButton.textContent = 'Send Availability Enquiry'; }
+    syncDateFields();
+    document.getElementById('bf-name')?.focus();
+  });
 }
 
-/* ---------- Date guards: no past dates, check-out after check-in ---------- */
-function datesAreValid(checkin, checkout) {
-  if (!checkin || !checkout) return true;
-  return new Date(checkout) > new Date(checkin);
-}
-
+/* ---------- Date guards: local date minimums and valid ranges ---------- */
 function initDateGuards() {
-  const today = new Date().toISOString().split('T')[0];
-  const dateInputs = document.querySelectorAll('input[type="date"]');
-  dateInputs.forEach((input) => input.setAttribute('min', today));
-
-  const pairs = [
-    ['strip-checkin', 'strip-checkout'],
-    ['bf-checkin', 'bf-checkout'],
-  ];
-
-  pairs.forEach(([inId, outId]) => {
-    const inEl = document.getElementById(inId);
-    const outEl = document.getElementById(outId);
-    if (!inEl || !outEl) return;
-    inEl.addEventListener('change', () => {
-      outEl.setAttribute('min', inEl.value);
-      if (outEl.value && new Date(outEl.value) <= new Date(inEl.value)) {
-        const next = new Date(inEl.value);
-        next.setDate(next.getDate() + 1);
-        outEl.value = next.toISOString().split('T')[0];
-      }
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const toDateInputValue = (date) => {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  };
+  const minDate = toDateInputValue(today);
+  document.querySelectorAll('input[type="date"]').forEach((input) => input.setAttribute('min', minDate));
+  [['strip-date', 'strip-end-date'], ['bf-date', 'bf-end-date']].forEach(([startId, endId]) => {
+    const start = document.getElementById(startId);
+    const end = document.getElementById(endId);
+    if (!start || !end) return;
+    start.addEventListener('change', () => {
+      end.setAttribute('min', start.value || minDate);
+      if (end.value && start.value && end.value <= start.value) end.value = '';
     });
   });
 }
+

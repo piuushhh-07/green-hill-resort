@@ -866,3 +866,18 @@ p { max-width: 62ch; }
   content: none !important;
   display: none !important;
 }
+
+
+/* Availability and flexible enquiry form */
+.availability-note{display:flex;align-items:flex-start;gap:.65rem;padding:.9rem 1rem;margin:0 0 1.5rem;border:1px solid var(--color-border);border-left:3px solid var(--color-sage);border-radius:var(--radius-md);background:rgba(255,255,255,.72);color:var(--color-charcoal-soft);font-size:.88rem}
+.availability-note i{width:18px;height:18px;flex:0 0 18px;color:var(--color-sage-dark)}
+.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}
+.choice-grid label,.consent-field{display:flex;align-items:flex-start;gap:.55rem;padding:.7rem .8rem;border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-white);color:var(--color-charcoal-soft);font-size:.88rem;font-weight:500}
+.choice-grid input,.consent-field input{accent-color:var(--color-sage-dark);margin-top:.2rem;flex:0 0 auto}
+.consent-field{margin:.5rem 0 1rem}
+.form-status{min-height:1.4rem;margin:.5rem 0;color:#a33b2e;font-size:.9rem}
+.form-footnote{margin-top:.85rem;color:var(--color-charcoal-soft);font-size:.78rem}
+.booking-form [hidden]{display:none!important}
+.booking-form button:disabled{opacity:.65;cursor:wait}
+.booking-strip__field input,.booking-strip__field select{max-width:100%;min-width:0}
+@media(max-width:700px){.choice-grid{grid-template-columns:1fr}}
