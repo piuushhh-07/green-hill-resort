@@ -428,32 +428,3 @@ function initDateGuards() {
   });
 }
 
-function datesAreValid(checkin, checkout) {
-  if (!checkin || !checkout) return true;
-  return new Date(checkout) > new Date(checkin);
-}
-
-function initDateGuards() {
-  const today = new Date().toISOString().split('T')[0];
-  const dateInputs = document.querySelectorAll('input[type="date"]');
-  dateInputs.forEach((input) => input.setAttribute('min', today));
-
-  const pairs = [
-    ['strip-checkin', 'strip-checkout'],
-    ['bf-checkin', 'bf-checkout'],
-  ];
-
-  pairs.forEach(([inId, outId]) => {
-    const inEl = document.getElementById(inId);
-    const outEl = document.getElementById(outId);
-    if (!inEl || !outEl) return;
-    inEl.addEventListener('change', () => {
-      outEl.setAttribute('min', inEl.value);
-      if (outEl.value && new Date(outEl.value) <= new Date(inEl.value)) {
-        const next = new Date(inEl.value);
-        next.setDate(next.getDate() + 1);
-        outEl.value = next.toISOString().split('T')[0];
-      }
-    });
-  });
-}
