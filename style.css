@@ -7,17 +7,17 @@
 
 :root {
   /* Color */
-  --color-ivory: #F6F1E7;
-  --color-ivory-dark: #EFE7D4;
-  --color-charcoal: #211F1C;
-  --color-charcoal-soft: #4A463F;
-  --color-sage: #566B4D;
-  --color-sage-dark: #3D4D37;
-  --color-brass: #AD8A4D;
-  --color-brass-soft: #D8C6A1;
+  --color-ivory: #F5F1E7;
+  --color-ivory-dark: #D9F0E5;
+  --color-charcoal: #123D32;
+  --color-charcoal-soft: #49665D;
+  --color-sage: #1F8A70;
+  --color-sage-dark: #123D32;
+  --color-brass: #D9A441;
+  --color-brass-soft: #F0D18A;
   --color-white: #FFFFFF;
-  --color-border: #E1D7BE;
-  --color-success: #4B7A52;
+  --color-border: #D5E5DC;
+  --color-success: #1F8A70;
 
   /* Type */
   --font-serif: 'Fraunces', Georgia, serif;
@@ -189,9 +189,9 @@ p { max-width: 62ch; }
   padding-block: 1.4rem;
 }
 .site-header.is-scrolled {
-  background: rgba(246, 241, 231, 0.92);
+  background: rgba(18, 61, 50, 0.97);
   backdrop-filter: blur(10px);
-  box-shadow: 0 4px 24px -12px rgba(33,31,28,0.25);
+  box-shadow: 0 4px 24px -12px rgba(8, 35, 28, 0.32);
   padding-block: 0.9rem;
 }
 
@@ -203,7 +203,7 @@ p { max-width: 62ch; }
 }
 
 .brand { display: inline-flex; align-items: center; gap: 0.6rem; color: var(--color-white); }
-.site-header.is-scrolled .brand { color: var(--color-charcoal); }
+.site-header.is-scrolled .brand { color: var(--color-white); }
 .brand__mark { width: 26px; height: 26px; }
 .brand__mark svg { width: 100%; height: 100%; }
 .brand__text { font-family: var(--font-serif); font-size: 1.25rem; letter-spacing: 0.01em; }
@@ -216,7 +216,7 @@ p { max-width: 62ch; }
   position: relative;
   padding-block: 0.3rem;
 }
-.site-header.is-scrolled .main-nav a { color: var(--color-charcoal); }
+.site-header.is-scrolled .main-nav a { color: var(--color-white); }
 .main-nav a::after {
   content: "";
   position: absolute;
@@ -229,7 +229,7 @@ p { max-width: 62ch; }
 
 .header-actions { display: flex; align-items: center; gap: 0.9rem; }
 .header-actions .icon-link { color: var(--color-white); }
-.site-header.is-scrolled .header-actions .icon-link { color: var(--color-charcoal); }
+.site-header.is-scrolled .header-actions .icon-link { color: var(--color-white); }
 
 .hamburger {
   display: none;
@@ -243,7 +243,7 @@ p { max-width: 62ch; }
   background: var(--color-white);
   transition: transform var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
 }
-.site-header.is-scrolled .hamburger span { background: var(--color-charcoal); }
+.site-header.is-scrolled .hamburger span { background: var(--color-white); }
 .hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
 .hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
@@ -309,10 +309,16 @@ p { max-width: 62ch; }
   display: block; width: 100%; height: 100%; object-fit: cover;
   animation: heroZoom 18s var(--ease) forwards;
 }
+.hero__video {
+  animation: none;
+  transform: none;
+  filter: none;
+  object-position: center center;
+}
 @keyframes heroZoom { from { transform: scale(1); } to { transform: scale(1.08); } }
 .hero__scrim {
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(20,19,15,0.55) 0%, rgba(20,19,15,0.35) 45%, rgba(20,19,15,0.75) 100%);
+  background: linear-gradient(180deg, rgba(7,35,28,0.38) 0%, rgba(7,35,28,0.18) 45%, rgba(7,35,28,0.62) 100%);
 }
 
 .hero__content { position: relative; z-index: 1; padding-top: 6rem; }
@@ -741,7 +747,7 @@ p { max-width: 62ch; }
 /* ===========================================================
    FOOTER
    =========================================================== */
-.site-footer { background: #17160F; color: rgba(255,255,255,0.75); padding-top: clamp(3rem, 6vw, 5rem); }
+.site-footer { background: #123D32; color: rgba(255,255,255,0.82); padding-top: clamp(3rem, 6vw, 5rem); }
 .site-footer__grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 2.5rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
 .brand--footer { color: var(--color-white); margin-bottom: 0.75rem; }
 .site-footer__brand p { font-size: 0.9rem; max-width: 30ch; }
