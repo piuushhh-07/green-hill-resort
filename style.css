@@ -881,3 +881,231 @@ p { max-width: 62ch; }
 .booking-form button:disabled{opacity:.65;cursor:wait}
 .booking-strip__field input,.booking-strip__field select{max-width:100%;min-width:0}
 @media(max-width:700px){.choice-grid{grid-template-columns:1fr}}
+
+
+/* ===========================================================
+   RESPONSIVE SYSTEM — desktop, laptop, tablet and mobile
+   Consolidated overrides for the complete Green Hill Resort site.
+   =========================================================== */
+
+/* Prevent grid/flex children and long content from forcing overflow. */
+.container,
+.site-header__inner,
+.site-footer__grid,
+.intro-split,
+.amenities-split,
+.booking-split,
+.location-split,
+.faq-layout,
+.pricing-grid,
+.room-grid,
+.explore-grid,
+.experience-grid,
+.highlights,
+.booking-form,
+.booking-form__row {
+  min-width: 0;
+}
+img,
+video,
+iframe {
+  max-width: 100%;
+}
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+input,
+select,
+textarea {
+  min-width: 0;
+  max-width: 100%;
+}
+textarea {
+  resize: vertical;
+  width: 100%;
+}
+.form-field input,
+.form-field select {
+  width: 100%;
+}
+.form-field input[type="checkbox"],
+.form-field input[type="radio"],
+.choice-grid input,
+.consent-field input {
+  width: auto;
+}
+p,
+li,
+h1,
+h2,
+h3,
+h4,
+a {
+  overflow-wrap: anywhere;
+}
+.section-head,
+.section-head p,
+.body-lg {
+  max-width: 65ch;
+}
+
+/* Large laptops and smaller desktop monitors. */
+@media (max-width: 1200px) {
+  :root { --container-w: 1160px; }
+  .container { padding-inline: clamp(1.25rem, 3vw, 2rem); }
+  .main-nav ul { gap: clamp(0.8rem, 1.5vw, 1.4rem); }
+  .header-actions { gap: 0.55rem; }
+  .site-footer__grid { gap: 1.75rem; }
+  .price-card { padding: 1.75rem; }
+}
+
+/* Tablets and compact laptops. */
+@media (max-width: 960px) {
+  html { scroll-padding-top: 76px; }
+  .site-header { padding-block: 1rem; }
+  .site-header.is-scrolled { padding-block: 0.7rem; }
+  .site-header__inner { gap: 0.75rem; }
+  .brand { min-width: 0; }
+  .brand__text { font-size: clamp(1rem, 2.4vw, 1.2rem); }
+  .header-actions { margin-left: auto; }
+  .main-nav { padding: 6rem 1.5rem 2rem; overflow-y: auto; }
+  .main-nav ul { gap: clamp(1rem, 3vh, 1.8rem); }
+  .main-nav a { display: inline-block; padding: 0.35rem 0.75rem; }
+  .hamburger { position: relative; z-index: 61; width: 44px; height: 44px; align-items: center; justify-content: center; }
+  .hamburger span { width: 23px; }
+  .hero { min-height: max(760px, 100svh); }
+  .hero__content { width: calc(100% - 2.5rem); padding-top: 7.25rem; }
+  .hero__heading { max-width: 13ch; font-size: clamp(2.5rem, 7vw, 4.5rem); }
+  .hero__subheading { max-width: 52ch; }
+  .hero__actions { margin-bottom: 2.5rem; }
+  .booking-strip { width: calc(100% - 2.5rem); margin-bottom: 1.5rem; gap: 1rem; }
+  .mobile-cta-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); padding-bottom: env(safe-area-inset-bottom); }
+  .mobile-cta-bar__btn { min-width: 0; min-height: 54px; padding: 0.7rem 0.35rem; font-size: clamp(0.72rem, 1.8vw, 0.85rem); white-space: nowrap; }
+  .whatsapp-float { right: 1rem; bottom: calc(5rem + env(safe-area-inset-bottom)); width: 50px; height: 50px; }
+  .modal { padding: 1rem; }
+  .modal__panel { max-height: 90dvh; overflow-y: auto; }
+}
+
+/* Phones and small tablets. */
+@media (max-width: 720px) {
+  .container { padding-inline: 1.25rem; }
+  .section { padding-block: clamp(3.25rem, 10vw, 4.5rem); }
+  .section-head { margin-bottom: 2rem; }
+  h2 { font-size: clamp(1.8rem, 7vw, 2.35rem); }
+  .body-lg { font-size: 1rem; }
+  .btn { min-height: 46px; padding: 0.8rem 1.2rem; white-space: normal; text-align: center; }
+  .site-header__inner { padding-inline: 1rem; }
+  .brand__mark { width: 23px; height: 23px; flex: 0 0 auto; }
+  .brand__text { font-size: 1.05rem; }
+  .hero { min-height: auto; min-height: 100svh; padding-top: 4.5rem; }
+  .hero__content { width: calc(100% - 2.5rem); padding: 5.5rem 0 1rem; }
+  .hero__heading { font-size: clamp(2.35rem, 10vw, 3.6rem); line-height: 1.04; max-width: 12ch; }
+  .hero__subheading { font-size: 1rem; line-height: 1.55; max-width: 42ch; margin-bottom: 1.5rem; }
+  .hero__actions { gap: 0.65rem; margin-bottom: 1.25rem; }
+  .hero__actions .btn { flex: 1 1 145px; }
+  .booking-strip { width: calc(100% - 2rem); grid-template-columns: minmax(0, 1fr); gap: 0.9rem; padding: 1.1rem; margin: 0 auto 1rem; }
+  .booking-strip__field { min-width: 0; }
+  .booking-strip__field input,
+  .booking-strip__field select { width: 100%; min-height: 42px; }
+  .booking-strip__submit { grid-column: auto; width: 100%; }
+  .intro-split { gap: 1.75rem; }
+  .intro-split__media img { height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+  .stat-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  .stat-row__value { font-size: 1.8rem; }
+  .highlights { grid-template-columns: 1fr; }
+  .highlight-card { padding: 1.6rem 1.25rem; }
+  .experience-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: clamp(145px, 35vw, 210px); gap: 0.65rem; }
+  .experience-card--wide { grid-column: span 2; }
+  .experience-card figcaption { padding: 0.8rem; font-size: 0.95rem; }
+  .room-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.85rem; }
+  .room-card__body { padding: 1rem; }
+  .room-card__body h3 { font-size: 1.15rem; }
+  .room-card__body p:not(.room-card__meta) { font-size: 0.85rem; }
+  .pricing-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .price-card { padding: 1.5rem; }
+  .price-card--featured { order: 0; }
+  .gallery-filters { gap: 0.45rem; margin-bottom: 1.5rem; }
+  .gallery-filter { padding: 0.5rem 0.85rem; font-size: 0.8rem; }
+  .masonry { columns: 2; column-gap: 0.65rem; }
+  .masonry__item { margin-bottom: 0.65rem; }
+  .amenities-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem; }
+  .booking-split { gap: 1.5rem; }
+  .booking-split__media { max-height: none; }
+  .booking-split__media img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; }
+  .booking-form__row { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .choice-grid { grid-template-columns: minmax(0, 1fr); }
+  .booking-form__actions .btn { flex-basis: 100%; }
+  .testimonial-track { min-height: 270px; }
+  .testimonial-card__quote { font-size: 1.15rem; }
+  .testimonial-controls { gap: 1rem; margin-top: 1.25rem; }
+  .location-split { gap: 1.5rem; }
+  .location-split__map { aspect-ratio: 4 / 3; }
+  .explore-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  .faq-layout { gap: 1.25rem; }
+  .accordion-item__trigger { gap: 1rem; padding: 1.1rem 0; font-size: 1rem; }
+  .final-cta { padding-block: 3.5rem; }
+  .final-cta__actions { flex-direction: column; align-items: stretch; }
+  .final-cta__actions .btn { width: 100%; }
+  .site-footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.75rem 1rem; }
+  .site-footer__brand { grid-column: 1 / -1; }
+  .site-footer__bottom { padding-bottom: calc(5rem + env(safe-area-inset-bottom)); }
+  .modal__panel { grid-template-columns: 1fr; max-height: 88dvh; }
+  .modal__media { min-height: 0; max-height: 32vh; }
+  .modal__media img { max-height: 32vh; object-fit: cover; }
+  .modal__content { padding: 1.25rem; }
+  .lightbox__img { max-width: 94vw; max-height: 76dvh; }
+  .lightbox__close { top: max(0.75rem, env(safe-area-inset-top)); right: 0.75rem; }
+  .lightbox__counter { bottom: calc(5rem + env(safe-area-inset-bottom)); }
+}
+
+/* Narrow phones. */
+@media (max-width: 420px) {
+  .container { padding-inline: 1rem; }
+  .site-header { padding-block: 0.75rem; }
+  .site-header__inner { padding-inline: 0.85rem; }
+  .brand { gap: 0.4rem; }
+  .brand__text { font-size: 0.98rem; }
+  .header-actions { gap: 0.25rem; }
+  .hamburger { width: 40px; height: 40px; }
+  .hero__content { width: calc(100% - 2rem); padding-top: 5rem; }
+  .hero__heading { font-size: clamp(2.1rem, 10.5vw, 2.8rem); }
+  .hero__actions { flex-direction: column; align-items: stretch; }
+  .hero__actions .btn { width: 100%; }
+  .booking-strip { width: calc(100% - 1.5rem); padding: 1rem; }
+  .experience-grid { grid-template-columns: 1fr; grid-auto-rows: 210px; }
+  .experience-card--wide { grid-column: auto; }
+  .room-grid,
+  .explore-grid { grid-template-columns: 1fr; }
+  .room-card__media { aspect-ratio: 16 / 10; }
+  .amenities-list { grid-template-columns: 1fr; }
+  .stat-row { gap: 0.8rem; }
+  .stat-row__value { font-size: 1.55rem; }
+  .site-footer__grid { grid-template-columns: 1fr; }
+  .site-footer__brand { grid-column: auto; }
+  .mobile-cta-bar__btn { gap: 0.25rem; font-size: 0.7rem; }
+  .mobile-cta-bar__btn i { width: 15px; height: 15px; }
+  .whatsapp-float { right: 0.75rem; width: 46px; height: 46px; }
+  .testimonial-track { min-height: 310px; }
+}
+
+/* Very small devices and narrow landscape viewports. */
+@media (max-width: 340px) {
+  .brand__text { font-size: 0.9rem; }
+  .hero__heading { font-size: 2rem; }
+  .mobile-cta-bar__btn { font-size: 0.64rem; }
+  .mobile-cta-bar__btn i { display: none; }
+  .booking-strip { width: calc(100% - 1rem); }
+}
+@media (max-height: 520px) and (orientation: landscape) {
+  .hero { min-height: 720px; }
+  .hero__content { padding-top: 6rem; }
+  .main-nav ul { gap: 0.5rem; }
+  .main-nav a { font-size: 1.1rem; }
+}
+
+/* Ensure the browser's hidden state always wins over component display rules. */
+[hidden] { display: none !important; }
