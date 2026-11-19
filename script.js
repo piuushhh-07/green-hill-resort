@@ -318,6 +318,8 @@ function initBookingForms() {
     specificDates.hidden = !isSpecific;
     flexibleDateField.hidden = dateMode.value !== 'Flexible dates';
     if (preferredDate) preferredDate.required = isSpecific;
+    const flexibleDateInput = document.getElementById('bf-flexible-dates');
+    if (flexibleDateInput) flexibleDateInput.required = dateMode.value === 'Flexible dates';
     if (endDate) {
       const isStay = enquiryType?.value === 'Weekend Getaway';
       endDate.required = isSpecific && isStay;
@@ -335,11 +337,9 @@ function initBookingForms() {
       const stripDate = document.getElementById('strip-date')?.value || '';
       const stripEndDate = document.getElementById('strip-end-date')?.value || '';
       const stripType = document.getElementById('strip-type')?.value || '';
-      if (stripDate) {
-        dateMode.value = 'Specific dates';
-        preferredDate.value = stripDate;
-      }
-      if (stripEndDate && endDate) endDate.value = stripEndDate;
+      dateMode.value = stripDate ? 'Specific dates' : 'Not decided';
+      if (preferredDate) preferredDate.value = stripDate;
+      if (endDate) endDate.value = stripDate ? stripEndDate : '';
       if (stripType && enquiryType) enquiryType.value = stripType;
       syncDateFields();
       document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' });
@@ -351,6 +351,12 @@ function initBookingForms() {
     mainForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (status) status.textContent = '';
+      if (dateMode?.value === 'Flexible dates' && !document.getElementById('bf-flexible-dates')?.value.trim()) {
+        const flexibleInput = document.getElementById('bf-flexible-dates');
+        flexibleInput?.focus();
+        if (status) status.textContent = 'Please enter the date window that works for you.';
+        return;
+      }
       if (dateMode?.value === 'Specific dates') {
         if (!preferredDate?.value) {
           preferredDate?.focus();
