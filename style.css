@@ -312,8 +312,11 @@ p { max-width: 62ch; }
 .hero__video {
   animation: none;
   transform: none;
-  filter: none;
+  /* A restrained grade makes the pool footage look clearer and more vibrant
+     without introducing artificial sharpening halos or excessive saturation. */
+  filter: brightness(1.045) contrast(1.07) saturate(1.12);
   object-position: center center;
+  backface-visibility: hidden;
 }
 @keyframes heroZoom { from { transform: scale(1); } to { transform: scale(1.08); } }
 .hero__scrim {
